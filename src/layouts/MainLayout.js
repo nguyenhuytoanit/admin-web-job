@@ -1,16 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 MainLayout.propTypes = {};
 
 function MainLayout(props) {
+  const location = useLocation();
   return (
     <div>
-      layout
       <Outlet />
     </div>
   );
+  // return ["/login", "/register"].includes(location.pathname) ? (
+  //   <Navigate to="/app" replace />
+  // ) : (
+  //   <Outlet />
+  // );
 }
 
 export default MainLayout;
