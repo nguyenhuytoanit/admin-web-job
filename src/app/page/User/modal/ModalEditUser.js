@@ -5,7 +5,7 @@ import React from "react";
 import { Button, Modal } from "react-bootstrap";
 import * as Yup from "yup";
 
-function ModalAddNewUser({ show, onHide, onSaveSuccess }) {
+function ModalEditUser({ show, onHide, onSaveSuccess, userInfo }) {
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Bắt buộc"),
     account: Yup.string().required("Bắt buộc"),
@@ -15,10 +15,16 @@ function ModalAddNewUser({ show, onHide, onSaveSuccess }) {
   return (
     <Modal size="lg" show={show} onHide={onHide} aria-labelledby="example-modal-sizes-title-lg">
       <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">Thêm mới tài khoản</Modal.Title>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Sửa thông tin "{userInfo.name}"
+        </Modal.Title>
       </Modal.Header>
       <Formik
-        initialValues={{ name: "", account: "", password: "" }}
+        initialValues={{
+          name: userInfo.name,
+          account: userInfo.account,
+          password: userInfo.password,
+        }}
         validationSchema={validationSchema}
         enableReinitialize
         onSubmit={(values) => {
@@ -64,7 +70,7 @@ function ModalAddNewUser({ show, onHide, onSaveSuccess }) {
             </Modal.Body>
             <Modal.Footer className="d-flex justify-content-center">
               <Button variant="primary" type="submit">
-                TẠO MỚI
+                Lưu lại
               </Button>
             </Modal.Footer>
           </Form>
@@ -74,4 +80,4 @@ function ModalAddNewUser({ show, onHide, onSaveSuccess }) {
   );
 }
 
-export default ModalAddNewUser;
+export default ModalEditUser;

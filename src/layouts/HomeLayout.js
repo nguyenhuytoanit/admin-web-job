@@ -16,6 +16,12 @@ function HomeLayout() {
 
         <hr className="sidebar-divider my-0" />
 
+        <li className={`nav-item ${clsx({ active: location.pathname === "/construction" })}`}>
+          <Link className="nav-link" to={"/construction"}>
+            <i className="fa-solid fa-trowel-bricks"></i>
+            <span>Công trình</span>
+          </Link>
+        </li>
         <li className={`nav-item ${clsx({ active: location.pathname === "/template" })}`}>
           <Link className="nav-link" to={"/template"}>
             <i className="fa-solid fa-clipboard-list"></i>

@@ -1,24 +1,22 @@
 import { Input } from "app/common/forms/Input";
-import { InputPassword } from "app/common/forms/InputPassword";
 import { Field, Form, Formik } from "formik";
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
 import * as Yup from "yup";
 
-function ModalAddNewUser({ show, onHide, onSaveSuccess }) {
+function ModalAddNewConstruction({ show, onHide, onSaveSuccess }) {
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Bắt buộc"),
-    account: Yup.string().required("Bắt buộc"),
-    password: Yup.string().required("Bắt buộc"),
+    code: Yup.string().required("Bắt buộc"),
   });
 
   return (
     <Modal size="lg" show={show} onHide={onHide} aria-labelledby="example-modal-sizes-title-lg">
       <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">Thêm mới tài khoản</Modal.Title>
+        <Modal.Title id="contained-modal-title-vcenter">Thêm mới công trình</Modal.Title>
       </Modal.Header>
       <Formik
-        initialValues={{ name: "", account: "", password: "" }}
+        initialValues={{ name: "", code: "" }}
         validationSchema={validationSchema}
         enableReinitialize
         onSubmit={(values) => {
@@ -33,8 +31,8 @@ function ModalAddNewUser({ show, onHide, onSaveSuccess }) {
                   <Field
                     name="name"
                     component={Input}
-                    placeholder={"Họ và tên"}
-                    label={"Họ và tên"}
+                    placeholder={"Tên công trình"}
+                    label={"Tên công trình"}
                     customFeedbackLabel
                     withFeedbackLabel
                     focus
@@ -42,20 +40,10 @@ function ModalAddNewUser({ show, onHide, onSaveSuccess }) {
                 </div>
                 <div className="col-lg-12 mt-2">
                   <Field
-                    name="account"
+                    name="code"
                     component={Input}
-                    placeholder={"Tài khoản"}
-                    label={"Tài khoản"}
-                    customFeedbackLabel
-                    withFeedbackLabel
-                  />
-                </div>
-                <div className="col-lg-12 mt-2">
-                  <Field
-                    name="password"
-                    component={InputPassword}
-                    placeholder={"Mật khẩu"}
-                    label={"Mật khẩu"}
+                    placeholder={"Mã công trình"}
+                    label={"Mã công trình"}
                     customFeedbackLabel
                     withFeedbackLabel
                   />
@@ -74,4 +62,4 @@ function ModalAddNewUser({ show, onHide, onSaveSuccess }) {
   );
 }
 
-export default ModalAddNewUser;
+export default ModalAddNewConstruction;

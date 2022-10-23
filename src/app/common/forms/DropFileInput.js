@@ -1,10 +1,7 @@
 import React, { useRef, useState } from "react";
 import "./DropFileInput.css";
-import { Icon } from "@material-ui/core";
-import { useIntl } from "react-intl";
 
 function DropFileInput({ onChange }) {
-  const intl = useIntl();
   const wrapperRef = useRef();
 
   const onUploadFile = (e) => {
@@ -30,7 +27,7 @@ function DropFileInput({ onChange }) {
 
   const onClickInput = (event) => {
     event.target.value = "";
-  }
+  };
 
   /*
   Có 2 cách handle việc hiển thị file khi xoá và thêm mới cùng 1 file
@@ -39,7 +36,7 @@ function DropFileInput({ onChange }) {
 
   return (
     <div
-      className="w-100 h-100px"
+      className="drop-file-container"
       ref={wrapperRef}
       onDragEnter={onDragEnter}
       onDragLeave={onDragLeave}
@@ -48,12 +45,8 @@ function DropFileInput({ onChange }) {
       <div className="drop-file-label bg-light w-100 h-100">
         <input type="file" onChange={onUploadFile} onClick={onClickInput}></input>
         <div className="w-100 h-100 d-flex justify-content-center align-items-center">
-          <Icon className="fas fa-cloud-upload-alt w-30px text-secondary"></Icon>
-          <p className="mb-0 text-secondary">
-            {intl.formatMessage({
-              id: "common_field_file_upload",
-            })}
-          </p>
+          <i class="fa-solid fa-upload  w-30px text-secondary"></i>
+          <p className="mb-0 text-secondary">Tải tệp từ máy tính</p>
         </div>
       </div>
     </div>

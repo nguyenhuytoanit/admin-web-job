@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory, { PaginationProvider } from "react-bootstrap-table2-paginator";
-import ModalAddNewUser from "./modal/ModalAddNewUser";
-import ModalEditUser from "./modal/ModalEditUser";
+import ModalAddNewConstruction from "./modal/ModalAddNewConstruction";
+import ModalEditConstruction from "./modal/ModalEditConstruction";
 
 const ActionsColumnFormatter = (cell, row, rowIndex, { onClickEditUser }) => (
   <>
@@ -32,19 +32,19 @@ const ActionsColumnFormatter = (cell, row, rowIndex, { onClickEditUser }) => (
   </>
 );
 
-function User(props) {
+function Construction(props) {
   const [isOpenModalAddNew, setIsOpenModalAddNew] = useState(false);
   const [isOpenModalEdit, setIsOpenModalEdit] = useState(false);
-  const [userDetail, setUserDetail] = useState(false);
+  const [constructionDetail, setConstructionDetail] = useState(false);
 
   const columns = [
     {
       dataField: "name",
-      text: "Họ và tên",
+      text: "Tên công trình",
     },
     {
-      dataField: "account",
-      text: "Tài khoản",
+      dataField: "code",
+      text: "Mã công trình",
     },
     {
       dataField: "",
@@ -52,7 +52,7 @@ function User(props) {
       formatter: ActionsColumnFormatter,
       formatExtraData: {
         onClickEditUser: (user) => {
-          setUserDetail(user);
+          setConstructionDetail(user);
           setIsOpenModalEdit(true);
         },
       },
@@ -62,16 +62,16 @@ function User(props) {
   ];
 
   const templateList = [
-    { _id: 1, name: "name1", account: 1, password: "password1" },
-    { _id: 2, name: "name2", account: 2, password: "password1" },
-    { _id: 3, name: "name3", account: 3, password: "password1" },
-    { _id: 4, name: "name4", account: 4, password: "password1" },
-    { _id: 5, name: "name5", account: 5, password: "password1" },
-    { _id: 6, name: "name6", account: 6, password: "password1" },
-    { _id: 7, name: "name7", account: 7, password: "password1" },
-    { _id: 8, name: "name8", account: 8, password: "password1" },
-    { _id: 9, name: "name9", account: 9, password: "password1" },
-    { _id: 10, name: "name10", account: 10, password: "password1" },
+    { _id: 1, name: "name1", code: 1 },
+    { _id: 2, name: "name2", code: 2 },
+    { _id: 3, name: "name3", code: 3 },
+    { _id: 4, name: "name4", code: 4 },
+    { _id: 5, name: "name5", code: 5 },
+    { _id: 6, name: "name6", code: 6 },
+    { _id: 7, name: "name7", code: 7 },
+    { _id: 8, name: "name8", code: 8 },
+    { _id: 9, name: "name9", code: 9 },
+    { _id: 10, name: "name10", code: 10 },
   ];
 
   return (
@@ -81,7 +81,7 @@ function User(props) {
           className="btn btn-primary text-uppercase"
           onClick={() => setIsOpenModalAddNew(true)}
         >
-          Thêm mới tài khoản
+          Thêm mới công trình
         </button>
       </div>
       <div className="card shadow mt-4">
@@ -114,22 +114,22 @@ function User(props) {
         </div>
       </div>
       {isOpenModalAddNew && (
-        <ModalAddNewUser
+        <ModalAddNewConstruction
           show={isOpenModalAddNew}
           onHide={() => setIsOpenModalAddNew(false)}
           onSaveSuccess={() => {}}
         />
       )}
       {isOpenModalEdit && (
-        <ModalEditUser
+        <ModalEditConstruction
           show={isOpenModalEdit}
           onHide={() => setIsOpenModalEdit(false)}
           onSaveSuccess={() => {}}
-          userInfo={userDetail}
+          constructionInfo={constructionDetail}
         />
       )}
     </div>
   );
 }
 
-export default User;
+export default Construction;

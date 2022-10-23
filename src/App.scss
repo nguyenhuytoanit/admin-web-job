@@ -1,0 +1,27 @@
+.App {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+$length: 200;
+@for $i from 1 through $length {
+  .h-#{$i}px {
+    height: $i + px
+  }
+  .w-#{$i}px {
+    width: $i + px
+  }
+}
+
+.object-fit-cover {
+  object-fit: cover;
+}
+
+.object-fit-contain {
+  object-fit: contain;
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}

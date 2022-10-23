@@ -16,3 +16,9 @@
   border: 2px dashed #1bc5bd;
   opacity: 0.6;
 }
+
+
+.drop-file-container {
+  width: 100%;
+  height: 100px;
+}
