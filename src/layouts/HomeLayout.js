@@ -25,7 +25,7 @@ function HomeLayout() {
         <li className={`nav-item ${clsx({ active: location.pathname === "/template" })}`}>
           <Link className="nav-link" to={"/template"}>
             <i className="fa-solid fa-clipboard-list"></i>
-            <span>Template</span>
+            <span>Mẫu báo cáo</span>
           </Link>
         </li>
         <li className={`nav-item ${clsx({ active: location.pathname === "/user" })}`}>
