@@ -1,12 +1,19 @@
 import { Input } from "app/common/forms/Input";
 import { Select } from "app/common/forms/Select";
 import { Field, FieldArray, Form, Formik } from "formik";
+import MultiPleChoice from "./question/MultiPleChoice";
 
 function TemplateEditContent(props) {
   const initialValues = {
     general: [
       {
-        content: [],
+        content: [
+          {
+            question: [
+              { type: "multiple-choice", answers: [{ contentAnswer: "Nhập nội dung đáp án" }] },
+            ],
+          },
+        ],
       },
     ],
   };
@@ -22,7 +29,6 @@ function TemplateEditContent(props) {
         }}
       >
         {({ values }) => {
-          console.log(values);
           return (
             <Form>
               <FieldArray name="general">
@@ -44,101 +50,107 @@ function TemplateEditContent(props) {
                             </div>
                           </div>
                           <FieldArray name={`general.${idxGeneral}.content`}>
-                            {({ insert, remove, push }) => (
-                              <div>
-                                {values.general[idxGeneral].content.length > 0 &&
-                                  values.general[idxGeneral].content.map((friend, index) => (
-                                    <div className="card mb-3" key={index}>
-                                      <div className="row m-2 align-items-center">
-                                        <div className="col-lg-8">
-                                          <Field
-                                            name={`content.${index}.name`}
-                                            component={Input}
-                                            placeholder={"Nhập nội dung đoạn văn"}
-                                            customFeedbackLabel
-                                            withFeedbackLabel
-                                          />
-                                        </div>
-                                        <div className="col-lg-3">
-                                          <Select
-                                            name="construction"
-                                            customFeedbackLabel
-                                            withFeedbackLabel
-                                          >
-                                            <option value="" hidden>
-                                              Chọn công trình trực thuộc
-                                            </option>
-                                            <option value={"1"}>Multiple choice</option>
-                                            <option value={"2"}>Textbox</option>
-                                            <option value={"2"}>Attachment</option>
-                                            <option value={"2"}>Paragraph</option>
-                                            <option value={"2"}>Date</option>
-                                            <option value={"2"}>Time</option>
-                                            <option value={"2"}>Select user</option>
-                                          </Select>
-                                        </div>
-                                        <div className="col-lg-1">
-                                          <button
-                                            type="button"
-                                            className="secondary"
-                                            onClick={() => remove(index)}
-                                          >
-                                            X
-                                          </button>
-                                        </div>
-                                      </div>
-
-                                      {/* <FieldArray name="friends">
-                                          {({ insert, remove, push }) => <div></div>}
-                                        </FieldArray>
-                                        <div className="p-3 row mt-2">
+                            {({ insert, remove, push }) => {
+                              const listContent = values.general[idxGeneral].content;
+                              return (
+                                <div>
+                                  {listContent.length > 0 &&
+                                    listContent.map((content, idxContent) => (
+                                      <div className="card mb-3" key={idxContent}>
+                                        <div className="row m-2 align-items-center">
                                           <div className="col-lg-8">
                                             <Field
-                                              name={`sdfsdfsdf`}
+                                              name={`content.${idxContent}.name`}
                                               component={Input}
-                                              placeholder={"Nhập nội dung đáp án 1"}
+                                              placeholder={"Nhập nội dung đoạn văn"}
                                               customFeedbackLabel
                                               withFeedbackLabel
                                             />
                                           </div>
                                           <div className="col-lg-3">
                                             <Select
-                                              name="sdfsd"
+                                              name="construction"
                                               customFeedbackLabel
                                               withFeedbackLabel
                                             >
-                                              <option value={"1"}>Không hiển thị ghi chú</option>
-                                              <option value={"2"}>Hiển thị ghi chú</option>
+                                              <option value={"multiple-choice"}>
+                                                Multiple choice
+                                              </option>
+                                              <option value={"textbox"}>Textbox</option>
+                                              <option value={"attachment"}>Attachment</option>
+                                              <option value={"paragraph"}>Paragraph</option>
+                                              <option value={"date"}>Date</option>
+                                              <option value={"time"}>Time</option>
+                                              <option value={"select-user"}>Select user</option>
                                             </Select>
                                           </div>
                                           <div className="col-lg-1">
                                             <button
                                               type="button"
                                               className="secondary"
-                                              onClick={() => remove(index)}
+                                              onClick={() => remove(idxContent)}
                                             >
                                               X
                                             </button>
                                           </div>
-                                        </div> */}
+                                        </div>
+                                        <FieldArray
+                                          name={`general.${idxGeneral}.content.${idxContent}.question`}
+                                        >
+                                          {({ insert, remove, push }) => {
+                                            const listQuestion =
+                                              values.general[idxGeneral].content[idxContent]
+                                                .question;
+                                            return (
+                                              <div>
+                                                {listQuestion.length > 0 &&
+                                                  listQuestion.map((question, idxQuestion) => {
+                                                    return (
+                                                      <div key={idxQuestion}>
+                                                        {question.type === "multiple-choice" && (
+                                                          <MultiPleChoice
+                                                            field={`general.${idxGeneral}.content.${idxContent}.question.${idxQuestion}.answers`}
+                                                            listAnswer={
+                                                              listQuestion[idxQuestion].answers
+                                                            }
+                                                            idxQuestion={idxQuestion}
+                                                          />
+                                                        )}
+                                                      </div>
+                                                    );
+                                                  })}
+                                              </div>
+                                            );
+                                          }}
+                                        </FieldArray>
+                                      </div>
+                                    ))}
+                                  <div
+                                    className=" d-flex align-items-center justify-content-center mt-3 text-primary cursor-pointer"
+                                    onClick={() =>
+                                      push({
+                                        question: [
+                                          {
+                                            type: "multiple-choice",
+                                            answers: [{ contentAnswer: "Nhập nội dung đáp án" }],
+                                          },
+                                        ],
+                                      })
+                                    }
+                                  >
+                                    <div className="d-inline-block">
+                                      <i className="fa-solid fa-plus"></i>
+                                      <span>Thêm mới nội dung</span>
                                     </div>
-                                  ))}
-                                <div
-                                  className=" d-flex align-items-center justify-content-center mt-3 text-primary cursor-pointer"
-                                  onClick={() => push({ name: "" })}
-                                >
-                                  <div className="d-inline-block">
-                                    <i className="fa-solid fa-plus"></i>
-                                    <span>Thêm mới nội dung</span>
                                   </div>
                                 </div>
-                              </div>
-                            )}
+                              );
+                            }}
                           </FieldArray>
                         </div>
                       ))}
                     <div
-                      className=" d-flex align-items-center justify-content-center mt-3 text-primary cursor-pointer"
+                      className=" d-flex align-items-center justify-content-center mt-3 text-danger cursor-pointer"
                       onClick={() => push({ content: [] })}
                     >
                       <div className="d-inline-block">
