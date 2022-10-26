@@ -1,7 +1,10 @@
 import { Input } from "app/common/forms/Input";
-import { Select } from "app/common/forms/Select";
 import { Field, FieldArray, Form, Formik } from "formik";
+import { QUESTION_TYPE } from "./question/contants";
 import MultiPleChoice from "./question/MultiPleChoice";
+import Paragraph from "./question/Paragraph";
+import TextBox from "./question/TextBox";
+import Time from "./question/Time";
 
 function TemplateEditContent(props) {
   const initialValues = {
@@ -10,8 +13,10 @@ function TemplateEditContent(props) {
         content: [
           {
             question: "",
-            type: "multiple-choice",
+            type: QUESTION_TYPE.TEXT_BOX,
             answers: [{ contentAnswer: "Nhập nội dung đáp án 1", showNote: "0" }],
+            showAnswer: false,
+            contentAnswerTextBox: "",
           },
         ],
       },
@@ -45,7 +50,6 @@ function TemplateEditContent(props) {
                                 placeholder={"Nhập tên block"}
                                 customFeedbackLabel
                                 withFeedbackLabel
-                                focus
                               />
                             </div>
                           </div>
@@ -57,48 +61,37 @@ function TemplateEditContent(props) {
                                   {listContent.length > 0 &&
                                     listContent.map((content, idxContent) => {
                                       return (
-                                        <div className="card mb-3" key={idxContent}>
-                                          <div className="row m-2 align-items-center">
-                                            <div className="col-lg-8">
-                                              <Field
-                                                name={`content.${idxContent}.name`}
-                                                component={Input}
-                                                placeholder={"Nhập nội dung đoạn văn"}
-                                                customFeedbackLabel
-                                                withFeedbackLabel
-                                              />
-                                            </div>
-                                            <div className="col-lg-3">
-                                              <Select
-                                                name="construction"
-                                                customFeedbackLabel
-                                                withFeedbackLabel
-                                              >
-                                                <option value={"multiple-choice"}>
-                                                  Multiple choice
-                                                </option>
-                                                <option value={"textbox"}>Textbox</option>
-                                                <option value={"attachment"}>Attachment</option>
-                                                <option value={"paragraph"}>Paragraph</option>
-                                                <option value={"date"}>Date</option>
-                                                <option value={"time"}>Time</option>
-                                                <option value={"select-user"}>Select user</option>
-                                              </Select>
-                                            </div>
-                                            <div className="col-lg-1">
-                                              <button
-                                                type="button"
-                                                className="secondary"
-                                                onClick={() => remove(idxContent)}
-                                              >
-                                                X
-                                              </button>
-                                            </div>
-                                          </div>
-                                          {content.type === "multiple-choice" && (
+                                        <div key={idxContent}>
+                                          {content.type === QUESTION_TYPE.MULTIPLE_CHOICE && (
                                             <MultiPleChoice
-                                              field={`general.${idxGeneral}.content.${idxContent}.answers`}
-                                              listAnswer={content.answers}
+                                              field={`general.${idxGeneral}.content.${idxContent}`}
+                                              content={content}
+                                              idxContent={idxContent}
+                                              remove={remove}
+                                            />
+                                          )}
+                                          {content.type === QUESTION_TYPE.PARAGRAPH && (
+                                            <Paragraph
+                                              field={`general.${idxGeneral}.content.${idxContent}`}
+                                              content={content}
+                                              idxContent={idxContent}
+                                              remove={remove}
+                                            />
+                                          )}
+                                          {content.type === QUESTION_TYPE.TIME && (
+                                            <Time
+                                              field={`general.${idxGeneral}.content.${idxContent}`}
+                                              content={content}
+                                              idxContent={idxContent}
+                                              remove={remove}
+                                            />
+                                          )}
+                                          {content.type === QUESTION_TYPE.TEXT_BOX && (
+                                            <TextBox
+                                              field={`general.${idxGeneral}.content.${idxContent}`}
+                                              content={content}
+                                              idxContent={idxContent}
+                                              remove={remove}
                                             />
                                           )}
                                         </div>
@@ -108,10 +101,8 @@ function TemplateEditContent(props) {
                                     className=" d-flex align-items-center justify-content-center mt-3 text-primary cursor-pointer"
                                     onClick={() =>
                                       push({
-                                        type: "multiple-choice",
-                                        answers: [
-                                          { contentAnswer: "Nhập nội dung đáp án", showNote: "0" },
-                                        ],
+                                        type: QUESTION_TYPE.MULTIPLE_CHOICE,
+                                        answers: [{ contentAnswer: "", showNote: "0" }],
                                       })
                                     }
                                   >
