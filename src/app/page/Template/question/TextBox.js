@@ -8,7 +8,7 @@ import { QUESTION_TYPE } from "./contants";
 function TextBox({ field, idxContent, remove, content }) {
   return (
     <div>
-      <div className="card mb-3">
+      <div className="card mb-3 col-lg-11">
         <div className="row m-2 align-items-center">
           <div className="col-lg-8">
             <Field
@@ -31,9 +31,10 @@ function TextBox({ field, idxContent, remove, content }) {
             </Select>
           </div>
           <div className="col-lg-1">
-            <button type="button" className="secondary" onClick={() => remove(idxContent)}>
-              X
-            </button>
+            <i
+              className="fa-solid fa-trash p-3 cursor-pointer text-danger"
+              onClick={() => remove(idxContent)}
+            ></i>
           </div>
         </div>
         <div className="p-3 col-lg-8">

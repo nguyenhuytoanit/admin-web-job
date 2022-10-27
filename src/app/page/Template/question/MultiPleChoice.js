@@ -7,7 +7,7 @@ import { QUESTION_TYPE } from "./contants";
 function MultiPleChoice({ field, content, idxContent, remove }) {
   return (
     <div>
-      <div className="card mb-3">
+      <div className="card mb-3 col-lg-11">
         <div className="row m-2 align-items-center">
           <div className="col-lg-8">
             <Field
@@ -30,9 +30,10 @@ function MultiPleChoice({ field, content, idxContent, remove }) {
             </Select>
           </div>
           <div className="col-lg-1">
-            <button type="button" className="secondary" onClick={() => remove(idxContent)}>
-              X
-            </button>
+            <i
+              className="fa-solid fa-trash p-3 cursor-pointer text-danger"
+              onClick={() => remove(idxContent)}
+            ></i>
           </div>
         </div>
         <FieldArray name={`${field}.answers`}>
@@ -74,13 +75,10 @@ function MultiPleChoice({ field, content, idxContent, remove }) {
                           </Select>
                         </div>
                         <div className="col-lg-1">
-                          <button
-                            type="button"
-                            className="secondary"
+                          <i
+                            class="fa-solid fa-xmark cursor-pointer p-2"
                             onClick={() => remove(idxAnswer)}
-                          >
-                            X
-                          </button>
+                          ></i>
                         </div>
                       </div>
                     );
