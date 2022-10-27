@@ -76,7 +76,7 @@ function MultiPleChoice({ field, content, idxContent, remove }) {
                         </div>
                         <div className="col-lg-1">
                           <i
-                            class="fa-solid fa-xmark cursor-pointer p-2"
+                            className="fa-solid fa-xmark cursor-pointer p-2"
                             onClick={() => remove(idxAnswer)}
                           ></i>
                         </div>
