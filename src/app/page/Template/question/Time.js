@@ -1,8 +1,6 @@
 import { Input } from "app/common/forms/Input";
-import { Select } from "app/common/forms/Select";
 import { Field } from "formik";
-import React from "react";
-import { QUESTION_TYPE } from "./contants";
+import SelectQuestion from "./components/SelectQuestion";
 
 function Time({ field, idxContent, remove }) {
   return (
@@ -19,15 +17,7 @@ function Time({ field, idxContent, remove }) {
             />
           </div>
           <div className="col-lg-3">
-            <Select name={`${field}.type`} customFeedbackLabel withFeedbackLabel>
-              <option value={QUESTION_TYPE.MULTIPLE_CHOICE}>Multiple choice</option>
-              <option value={QUESTION_TYPE.TEXT_BOX}>Textbox</option>
-              <option value={QUESTION_TYPE.ATTACHMENT}>Attachment</option>
-              <option value={QUESTION_TYPE.PARAGRAPH}>Paragraph</option>
-              <option value={QUESTION_TYPE.DATE}>Date</option>
-              <option value={QUESTION_TYPE.TIME}>Time</option>
-              <option value={QUESTION_TYPE.SELECT_USER}>Select user</option>
-            </Select>
+            <SelectQuestion field={field} />
           </div>
           <div className="col-lg-1">
             <i

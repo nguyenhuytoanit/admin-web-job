@@ -1,8 +1,7 @@
 import { Input } from "app/common/forms/Input";
 import { Select } from "app/common/forms/Select";
 import { Field, FieldArray } from "formik";
-import React from "react";
-import { QUESTION_TYPE } from "./contants";
+import SelectQuestion from "./components/SelectQuestion";
 
 function MultiPleChoice({ field, content, idxContent, remove }) {
   return (
@@ -19,15 +18,7 @@ function MultiPleChoice({ field, content, idxContent, remove }) {
             />
           </div>
           <div className="col-lg-3">
-            <Select name={`${field}.type`} customFeedbackLabel withFeedbackLabel>
-              <option value={QUESTION_TYPE.MULTIPLE_CHOICE}>Multiple choice</option>
-              <option value={QUESTION_TYPE.TEXT_BOX}>Textbox</option>
-              <option value={QUESTION_TYPE.ATTACHMENT}>Attachment</option>
-              <option value={QUESTION_TYPE.PARAGRAPH}>Paragraph</option>
-              <option value={QUESTION_TYPE.DATE}>Date</option>
-              <option value={QUESTION_TYPE.TIME}>Time</option>
-              <option value={QUESTION_TYPE.SELECT_USER}>Select user</option>
-            </Select>
+            <SelectQuestion field={field} />
           </div>
           <div className="col-lg-1">
             <i
@@ -45,14 +36,17 @@ function MultiPleChoice({ field, content, idxContent, remove }) {
                     return (
                       <div className="p-3 row mt-2" key={idxAnswer}>
                         <div className="col-lg-8">
-                          <Field
-                            name={`${field}.answers.${idxAnswer}.contentAnswer`}
-                            component={Input}
-                            className="border-top-0 border-right-0 border-left-0 rounded-0"
-                            placeholder={"Nhập nội dung đáp án"}
-                            customFeedbackLabel
-                            withFeedbackLabel
-                          />
+                          <div className="d-flex align-items-center">
+                            <div className="bg-secondary rounded-circle w-20px h-20px mr-2"></div>
+                            <Field
+                              name={`${field}.answers.${idxAnswer}.contentAnswer`}
+                              component={Input}
+                              className="border-top-0 border-right-0 border-left-0 rounded-0"
+                              placeholder={"Nhập nội dung đáp án"}
+                              customFeedbackLabel
+                              withFeedbackLabel
+                            />
+                          </div>
                           {answer.showNote === "1" && (
                             <div className="pr-5 mt-3">
                               <div className="bg-light border h-50px mr-10">
