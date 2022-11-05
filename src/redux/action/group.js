@@ -19,14 +19,9 @@ export const getListGroup = (params) => (dispatch) => {
 export const createGroup = (params) => (dispatch) => {
   dispatch(actions.startCall());
 
-  return requestFromServer.groupApi
-    .createGroup(params)
-    .then((res) => {
-      return res;
-    })
-    .catch((error) => {
-      dispatch(actions.catchError());
-    });
+  return requestFromServer.groupApi.createGroup(params).finally((res) => {
+    dispatch(actions.catchError());
+  });
 };
 
 export const getDetailGroup = (params) => (dispatch) => {

@@ -3,15 +3,17 @@ import BootstrapTable from "react-bootstrap-table-next";
 import { useDispatch } from "react-redux";
 import { getListUser } from "redux/action/user";
 import ModalAddNewUser from "./modal/ModalAddNewUser";
+import ModalDeleteUser from "./modal/ModalDeleteUser";
 import ModalEditUser from "./modal/ModalEditUser";
 
-const ActionsColumnFormatter = (cell, row, rowIndex, { onClickEditUser }) => (
+const ActionsColumnFormatter = (cell, row, rowIndex, { onClickEditUser, onClickDeleteUser }) => (
   <>
     <div
       className="btn btn-icon btn-light btn-hover-danger btn-sm mx-1 d-inline-block"
       key="edit"
       onClick={(event) => {
         event.stopPropagation();
+        onClickDeleteUser(row);
       }}
     >
       <span className="svg-icon-md svg-icon-danger">
@@ -37,7 +39,8 @@ function User(props) {
   const dispatch = useDispatch();
   const [isOpenModalAddNew, setIsOpenModalAddNew] = useState(false);
   const [isOpenModalEdit, setIsOpenModalEdit] = useState(false);
-  const [userDetail, setUserDetail] = useState(false);
+  const [isOpenModalDelete, setIsOpenModalDelete] = useState(false);
+  const [userDetail, setUserDetail] = useState({});
   const [users, setUsers] = useState([]);
 
   const columns = [
@@ -57,6 +60,10 @@ function User(props) {
         onClickEditUser: (user) => {
           setUserDetail(user);
           setIsOpenModalEdit(true);
+        },
+        onClickDeleteUser: (user) => {
+          setUserDetail(user);
+          setIsOpenModalDelete(true);
         },
       },
       classes: "text-right pr-0",
@@ -114,14 +121,28 @@ function User(props) {
         <ModalAddNewUser
           show={isOpenModalAddNew}
           onHide={() => setIsOpenModalAddNew(false)}
-          onSaveSuccess={() => {}}
+          onSaveSuccess={() => {
+            getListUserFn();
+          }}
         />
       )}
       {isOpenModalEdit && (
         <ModalEditUser
           show={isOpenModalEdit}
           onHide={() => setIsOpenModalEdit(false)}
-          onSaveSuccess={() => {}}
+          onSaveSuccess={() => {
+            getListUserFn();
+          }}
+          userInfo={userDetail}
+        />
+      )}
+      {isOpenModalDelete && (
+        <ModalDeleteUser
+          show={isOpenModalDelete}
+          onHide={() => setIsOpenModalDelete(false)}
+          onSaveSuccess={() => {
+            getListUserFn();
+          }}
           userInfo={userDetail}
         />
       )}

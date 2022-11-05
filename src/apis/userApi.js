@@ -17,8 +17,9 @@ export const userApi = {
   updateUser: (params) => {
     const url = apis.apisUser.apiUserUpdate(params.userId);
     return axiosClient.post(url, {
-      name: params.name,
-      code: params.code,
+      full_name: params.full_name,
+      phone: params.phone,
+      role: params.role,
     });
   },
   deleteUser: (params) => {

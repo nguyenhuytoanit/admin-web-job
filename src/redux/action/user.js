@@ -19,14 +19,9 @@ export const getListUser = (params) => (dispatch) => {
 export const createUser = (params) => (dispatch) => {
   dispatch(actions.startCall());
 
-  return requestFromServer.userApi
-    .createUser(params)
-    .then((res) => {
-      return res;
-    })
-    .catch((error) => {
-      dispatch(actions.catchError());
-    });
+  return requestFromServer.userApi.createUser(params).finally((res) => {
+    dispatch(actions.catchError());
+  });
 };
 
 export const getUserDetail = (params) => (dispatch) => {
