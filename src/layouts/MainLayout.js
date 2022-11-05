@@ -1,21 +1,17 @@
 import React from "react";
-import PropTypes from "prop-types";
+import { shallowEqual, useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 MainLayout.propTypes = {};
 
-function MainLayout(props) {
+function MainLayout() {
   const location = useLocation();
-  return (
-    <div>
-      <Outlet />
-    </div>
+  const user = useSelector((state) => state.auth.user, shallowEqual);
+  return user && ["/login", "/register"].includes(location.pathname) ? (
+    <Navigate to="/template" replace />
+  ) : (
+    <Outlet />
   );
-  // return ["/login", "/register"].includes(location.pathname) ? (
-  //   <Navigate to="/app" replace />
-  // ) : (
-  //   <Outlet />
-  // );
 }
 
 export default MainLayout;

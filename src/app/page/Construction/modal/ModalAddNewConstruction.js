@@ -1,13 +1,19 @@
 import { Input } from "app/common/forms/Input";
 import { Field, Form, Formik } from "formik";
+import { useNotify } from "hooks/useNotify";
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { createGroup } from "redux/action/group";
 import * as Yup from "yup";
 
 function ModalAddNewConstruction({ show, onHide, onSaveSuccess }) {
+  const dispatch = useDispatch();
+  const { successNotify, errorNotify } = useNotify();
+
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Bắt buộc"),
-    code: Yup.string().required("Bắt buộc"),
+    name: Yup.string().trim("Không được để trống").required("Bắt buộc"),
+    code: Yup.string().trim("Không được để trống").required("Bắt buộc"),
   });
 
   return (
@@ -19,8 +25,21 @@ function ModalAddNewConstruction({ show, onHide, onSaveSuccess }) {
         initialValues={{ name: "", code: "" }}
         validationSchema={validationSchema}
         enableReinitialize
-        onSubmit={(values) => {
-          console.log(values);
+        onSubmit={(values, { setSubmitting }) => {
+          const params = {
+            name: values.name.trim(),
+            code: values.code.trim(),
+          };
+          dispatch(createGroup(params)).then((res) => {
+            if (res.error) {
+              errorNotify("Có lỗi xảy ra khi tạo mới");
+            } else {
+              successNotify("Tạo mới thành công");
+              onSaveSuccess();
+              onHide();
+            }
+            setSubmitting(false);
+          });
         }}
       >
         {() => (

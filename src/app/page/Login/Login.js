@@ -2,12 +2,16 @@ import { Input } from "app/common/forms/Input";
 import { InputPassword } from "app/common/forms/InputPassword";
 import { Field, Form, Formik } from "formik";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { login } from "redux/action/auth";
 import * as Yup from "yup";
 import "./scss/login.scss";
 
 function LoginPage(props) {
+  const dispatch = useDispatch();
+
   const LoginSchema = Yup.object().shape({
-    email: Yup.string().required("Bắt buộc"),
+    username: Yup.string().required("Bắt buộc"),
     password: Yup.string().required("Bắt buộc"),
   });
 
@@ -17,9 +21,15 @@ function LoginPage(props) {
         <div className="title">Hệ thống quản lý công trình</div>
         <Formik
           validationSchema={LoginSchema}
-          initialValues={{ email: "", password: "" }}
+          initialValues={{ username: "", password: "" }}
           onSubmit={(values, { setSubmitting }) => {
-            setSubmitting(false);
+            const params = {
+              username: values.username,
+              password: values.password,
+            };
+            dispatch(login(params)).then(() => {
+              setSubmitting(false);
+            });
           }}
         >
           {({ isSubmitting }) => {
@@ -28,7 +38,7 @@ function LoginPage(props) {
                 <div className="form-group row">
                   <div className="col-lg-12 mt-3">
                     <Field
-                      name="email"
+                      name="username"
                       component={Input}
                       placeholder={"Tài khoản"}
                       label={"Tài khoản"}

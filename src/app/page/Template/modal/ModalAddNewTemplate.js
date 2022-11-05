@@ -16,15 +16,22 @@ import avatar8 from "assets/media/image/vertor8.png";
 import avatar9 from "assets/media/image/vertor9.png";
 import avatar10 from "assets/media/image/vertor10.png";
 import avatar11 from "assets/media/image/vertor11.png";
+import { useDispatch } from "react-redux";
+import { createTemplate } from "redux/action/template";
+import { getListGroup } from "redux/action/group";
+import { useNotify } from "hooks/useNotify";
 
 function ModalAddNewTemplate({ show, onHide, onSaveSuccess }) {
+  const dispatch = useDispatch();
+  const { successNotify, errorNotify } = useNotify();
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Bắt buộc"),
-    code: Yup.string().required("Bắt buộc"),
+    name: Yup.string().trim("Không được để trống").required("Bắt buộc"),
+    code: Yup.string().trim("Không được để trống").required("Bắt buộc"),
     construction: Yup.string().required("Băt buộc"),
   });
   const [avatar, setAvatar] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
+  const [groups, setGroups] = useState([]);
 
   const onUploadFile = (file) => {
     if (!file) return;
@@ -39,6 +46,12 @@ function ModalAddNewTemplate({ show, onHide, onSaveSuccess }) {
     }
   }, [avatar]);
 
+  useEffect(() => {
+    dispatch(getListGroup()).then((res) => {
+      setGroups(res);
+    });
+  }, [dispatch]);
+
   return (
     <Modal size="lg" show={show} onHide={onHide} aria-labelledby="example-modal-sizes-title-lg">
       <Modal.Header closeButton>
@@ -48,11 +61,27 @@ function ModalAddNewTemplate({ show, onHide, onSaveSuccess }) {
         initialValues={{ name: "", code: "", construction: "" }}
         validationSchema={validationSchema}
         enableReinitialize
-        onSubmit={(values) => {
-          console.log(values);
+        onSubmit={(values, { setSubmitting }) => {
+          const params = {
+            name: values.name.trim(),
+            code: values.code.trim(),
+            group_id: values.construction || "",
+            image: "",
+          };
+          console.log(params);
+          dispatch(createTemplate(params))
+            .then((res) => {
+              successNotify("Tạo mới thành công");
+              onSaveSuccess();
+              onHide();
+              setSubmitting(false);
+            })
+            .catch((error) => {
+              errorNotify("Có lỗi xảy ra khi tạo mới");
+            });
         }}
       >
-        {() => (
+        {({ isSubmitting }) => (
           <Form>
             <Modal.Body>
               <div className="form-group row">
@@ -82,12 +111,16 @@ function ModalAddNewTemplate({ show, onHide, onSaveSuccess }) {
                     label={"Thuộc công trình"}
                     customFeedbackLabel
                     withFeedbackLabel
+                    disabled={groups.length === 0}
                   >
                     <option value="" hidden>
                       Chọn công trình trực thuộc
                     </option>
-                    <option value={"1"}>Công trình</option>
-                    <option value={"2"}>Công trình 2</option>
+                    {groups?.map((group) => (
+                      <option key={group.id} value={group.id}>
+                        {group.name}
+                      </option>
+                    ))}
                   </Select>
                 </div>
                 <div className="col-lg-12 mt-2">
@@ -157,7 +190,7 @@ function ModalAddNewTemplate({ show, onHide, onSaveSuccess }) {
               </div>
             </Modal.Body>
             <Modal.Footer className="d-flex justify-content-center">
-              <Button variant="primary" type="submit">
+              <Button variant="primary" type="submit" disabled={isSubmitting}>
                 TẠO MỚI
               </Button>
             </Modal.Footer>

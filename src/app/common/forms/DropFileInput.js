@@ -45,7 +45,7 @@ function DropFileInput({ onChange }) {
       <div className="drop-file-label bg-light w-100 h-100">
         <input type="file" onChange={onUploadFile} onClick={onClickInput}></input>
         <div className="w-100 h-100 d-flex justify-content-center align-items-center">
-          <i class="fa-solid fa-upload  w-30px text-secondary"></i>
+          <i className="fa-solid fa-upload  w-30px text-secondary"></i>
           <p className="mb-0 text-secondary">Tải tệp từ máy tính</p>
         </div>
       </div>

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory, { PaginationProvider } from "react-bootstrap-table2-paginator";
-import ModalAddNewTemplate from "./modal/ModalAddNewTemplate";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { getListTemplate } from "redux/action/template";
+import ModalAddNewTemplate from "./modal/ModalAddNewTemplate";
 
 const ActionsColumnFormatter = (cell, row, rowIndex, { onClickEditUser }) => (
   <>
@@ -33,7 +34,10 @@ const ActionsColumnFormatter = (cell, row, rowIndex, { onClickEditUser }) => (
 );
 
 function Template(props) {
-  let navigate = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [templates, setTemplates] = useState([]);
   const [isOpenModalAddNew, setIsOpenModalAddNew] = useState(false);
   const columns = [
     {
@@ -58,18 +62,15 @@ function Template(props) {
     },
   ];
 
-  const templateList = [
-    { _id: 1, name: "name1", code: 1 },
-    { _id: 2, name: "name2", code: 2 },
-    { _id: 3, name: "name3", code: 3 },
-    { _id: 4, name: "name4", code: 4 },
-    { _id: 5, name: "name5", code: 5 },
-    { _id: 6, name: "name6", code: 6 },
-    { _id: 7, name: "name7", code: 7 },
-    { _id: 8, name: "name8", code: 8 },
-    { _id: 9, name: "name9", code: 9 },
-    { _id: 10, name: "name10", code: 10 },
-  ];
+  const getListTemplateFn = () => {
+    dispatch(getListTemplate()).then((res) => {
+      setTemplates(res);
+    });
+  };
+
+  useEffect(() => {
+    getListTemplateFn();
+  }, [dispatch]);
 
   return (
     <div>
@@ -83,38 +84,37 @@ function Template(props) {
       </div>
       <div className="card shadow mt-4">
         <div className="card-body">
-          <PaginationProvider
-            pagination={paginationFactory({
-              hideSizePerPage: true,
-              // totalSize: countClass,
-              // page: queryParams.pageNumber,
-            })}
-          >
-            {({ paginationTableProps }) => {
-              return (
-                <BootstrapTable
-                  wrapperClasses="table-responsive"
-                  bordered={false}
-                  classes="table table-head-custom table-vertical-center overflow-hidden"
-                  bootstrap4
-                  hover
-                  remote
-                  keyField="_id"
-                  data={templateList === null ? [] : templateList}
-                  columns={columns}
-                  onTableChange={(type, { page, sizePerPage, sortField, sortOrder, data }) => {}}
-                  {...paginationTableProps}
-                ></BootstrapTable>
-              );
-            }}
-          </PaginationProvider>
+          {Array.isArray(templates) && templates.length > 0 ? (
+            <BootstrapTable
+              wrapperClasses="table-responsive"
+              bordered={false}
+              classes="table table-head-custom table-vertical-center overflow-hidden"
+              bootstrap4
+              hover
+              remote
+              keyField="id"
+              data={templates === null ? [] : templates}
+              columns={columns}
+              onTableChange={(type, { page, sizePerPage, sortField, sortOrder, data }) => {}}
+            ></BootstrapTable>
+          ) : (
+            <div className="d-flex align-items-center flex-column">
+              <i
+                style={{ fontSize: "100px", color: "#e7e7e7" }}
+                className="fa-solid fa-receipt"
+              ></i>
+              <p className="mt-2">Không có dữ liệu</p>
+            </div>
+          )}
         </div>
       </div>
       {isOpenModalAddNew && (
         <ModalAddNewTemplate
           show={isOpenModalAddNew}
           onHide={() => setIsOpenModalAddNew(false)}
-          onSaveSuccess={() => {}}
+          onSaveSuccess={() => {
+            getListTemplateFn();
+          }}
         />
       )}
     </div>
