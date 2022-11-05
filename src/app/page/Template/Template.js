@@ -4,14 +4,21 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getListTemplate } from "redux/action/template";
 import ModalAddNewTemplate from "./modal/ModalAddNewTemplate";
+import ModalDeleteTemplate from "./modal/ModalDeleteTemplate";
 
-const ActionsColumnFormatter = (cell, row, rowIndex, { onClickEditUser }) => (
+const ActionsColumnFormatter = (
+  cell,
+  row,
+  rowIndex,
+  { onClickEditUser, onClickDeleteTemplate }
+) => (
   <>
     <div
       className="btn btn-icon btn-light btn-hover-danger btn-sm mx-1 d-inline-block"
       key="edit"
       onClick={(event) => {
         event.stopPropagation();
+        onClickDeleteTemplate(row);
       }}
     >
       <span className="svg-icon-md svg-icon-danger">
@@ -38,7 +45,10 @@ function Template(props) {
   const navigate = useNavigate();
 
   const [templates, setTemplates] = useState([]);
+  const [templateDetail, setTemplateDetail] = useState({});
   const [isOpenModalAddNew, setIsOpenModalAddNew] = useState(false);
+  const [isOpenModalDelete, setIsOpenModalDelete] = useState(false);
+
   const columns = [
     {
       dataField: "name",
@@ -54,7 +64,11 @@ function Template(props) {
       formatter: ActionsColumnFormatter,
       formatExtraData: {
         onClickEditUser: (template) => {
-          navigate(`/template/${template._id}/edit`);
+          navigate(`/template/${template.id}/edit`);
+        },
+        onClickDeleteTemplate: (template) => {
+          setTemplateDetail(template);
+          setIsOpenModalDelete(true);
         },
       },
       classes: "text-right pr-0",
@@ -79,7 +93,7 @@ function Template(props) {
           className="btn btn-primary text-uppercase"
           onClick={() => setIsOpenModalAddNew(true)}
         >
-          Thêm mới Template
+          Thêm mới mẫu báo cáo
         </button>
       </div>
       <div className="card shadow mt-4">
@@ -112,6 +126,16 @@ function Template(props) {
         <ModalAddNewTemplate
           show={isOpenModalAddNew}
           onHide={() => setIsOpenModalAddNew(false)}
+          onSaveSuccess={() => {
+            getListTemplateFn();
+          }}
+        />
+      )}
+      {isOpenModalDelete && (
+        <ModalDeleteTemplate
+          show={isOpenModalDelete}
+          onHide={() => setIsOpenModalDelete(false)}
+          templateInfo={templateDetail}
           onSaveSuccess={() => {
             getListTemplateFn();
           }}

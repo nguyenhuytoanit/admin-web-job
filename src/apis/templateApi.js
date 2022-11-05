@@ -7,11 +7,22 @@ export const TemplateApi = {
     return axiosClient.get(url);
   },
   getTemplateDetail: (templateId) => {
-    const url = apis.apisTemplate.apiListTemplate;
+    const url = apis.apisTemplate.apiTemplateDetail;
     return axiosClient.get(url, { params: { id: templateId } });
   },
   createTemplate: (params) => {
     const url = apis.apisTemplate.apiCreateTemplate;
     return axiosClient.post(url, params);
+  },
+  updateTemplate: (params) => {
+    const url = apis.apisTemplate.apiUpdateTemplate(params.templateId);
+    return axiosClient.post(url, {
+      name: params.name,
+      code: params.code,
+    });
+  },
+  deleteTemplate: (params) => {
+    const url = apis.apisTemplate.apiDeleteTemplate(params.templateId);
+    return axiosClient.post(url);
   },
 };

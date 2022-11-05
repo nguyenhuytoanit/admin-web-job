@@ -44,6 +44,7 @@ function ModalEditConstruction({ show, onHide, onSaveSuccess, groupInfo }) {
             })
             .catch((error) => {
               errorNotify("Có lỗi xảy ra khi tạo cập nhật");
+              setSubmitting(false);
             });
         }}
       >

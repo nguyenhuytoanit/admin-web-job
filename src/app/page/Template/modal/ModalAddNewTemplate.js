@@ -66,9 +66,8 @@ function ModalAddNewTemplate({ show, onHide, onSaveSuccess }) {
             name: values.name.trim(),
             code: values.code.trim(),
             group_id: values.construction || "",
-            image: "",
+            image: "image",
           };
-          console.log(params);
           dispatch(createTemplate(params))
             .then((res) => {
               successNotify("Tạo mới thành công");
@@ -78,6 +77,7 @@ function ModalAddNewTemplate({ show, onHide, onSaveSuccess }) {
             })
             .catch((error) => {
               errorNotify("Có lỗi xảy ra khi tạo mới");
+              setSubmitting(false);
             });
         }}
       >

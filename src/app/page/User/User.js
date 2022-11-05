@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory, { PaginationProvider } from "react-bootstrap-table2-paginator";
+import { useDispatch } from "react-redux";
+import { getListUser } from "redux/action/user";
 import ModalAddNewUser from "./modal/ModalAddNewUser";
 import ModalEditUser from "./modal/ModalEditUser";
 
@@ -33,17 +34,19 @@ const ActionsColumnFormatter = (cell, row, rowIndex, { onClickEditUser }) => (
 );
 
 function User(props) {
+  const dispatch = useDispatch();
   const [isOpenModalAddNew, setIsOpenModalAddNew] = useState(false);
   const [isOpenModalEdit, setIsOpenModalEdit] = useState(false);
   const [userDetail, setUserDetail] = useState(false);
+  const [users, setUsers] = useState([]);
 
   const columns = [
     {
-      dataField: "name",
+      dataField: "full_name",
       text: "Họ và tên",
     },
     {
-      dataField: "account",
+      dataField: "username",
       text: "Tài khoản",
     },
     {
@@ -61,18 +64,15 @@ function User(props) {
     },
   ];
 
-  const templateList = [
-    { _id: 1, name: "name1", account: 1, password: "password1" },
-    { _id: 2, name: "name2", account: 2, password: "password1" },
-    { _id: 3, name: "name3", account: 3, password: "password1" },
-    { _id: 4, name: "name4", account: 4, password: "password1" },
-    { _id: 5, name: "name5", account: 5, password: "password1" },
-    { _id: 6, name: "name6", account: 6, password: "password1" },
-    { _id: 7, name: "name7", account: 7, password: "password1" },
-    { _id: 8, name: "name8", account: 8, password: "password1" },
-    { _id: 9, name: "name9", account: 9, password: "password1" },
-    { _id: 10, name: "name10", account: 10, password: "password1" },
-  ];
+  const getListUserFn = () => {
+    dispatch(getListUser()).then((res) => {
+      setUsers(res);
+    });
+  };
+
+  useEffect(() => {
+    getListUserFn();
+  }, [dispatch]);
 
   return (
     <div>
@@ -86,31 +86,28 @@ function User(props) {
       </div>
       <div className="card shadow mt-4">
         <div className="card-body">
-          <PaginationProvider
-            pagination={paginationFactory({
-              hideSizePerPage: true,
-              // totalSize: countClass,
-              // page: queryParams.pageNumber,
-            })}
-          >
-            {({ paginationTableProps }) => {
-              return (
-                <BootstrapTable
-                  wrapperClasses="table-responsive"
-                  bordered={false}
-                  classes="table table-head-custom table-vertical-center overflow-hidden"
-                  bootstrap4
-                  hover
-                  remote
-                  keyField="_id"
-                  data={templateList === null ? [] : templateList}
-                  columns={columns}
-                  onTableChange={(type, { page, sizePerPage, sortField, sortOrder, data }) => {}}
-                  {...paginationTableProps}
-                ></BootstrapTable>
-              );
-            }}
-          </PaginationProvider>
+          {Array.isArray(users) && users.length > 0 ? (
+            <BootstrapTable
+              wrapperClasses="table-responsive"
+              bordered={false}
+              classes="table table-head-custom table-vertical-center overflow-hidden"
+              bootstrap4
+              hover
+              remote
+              keyField="id"
+              data={users === null ? [] : users}
+              columns={columns}
+              onTableChange={(type, { page, sizePerPage, sortField, sortOrder, data }) => {}}
+            ></BootstrapTable>
+          ) : (
+            <div className="d-flex align-items-center flex-column">
+              <i
+                style={{ fontSize: "100px", color: "#e7e7e7" }}
+                className="fa-solid fa-receipt"
+              ></i>
+              <p className="mt-2">Không có dữ liệu</p>
+            </div>
+          )}
         </div>
       </div>
       {isOpenModalAddNew && (
