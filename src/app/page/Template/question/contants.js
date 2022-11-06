@@ -1,5 +1,5 @@
 export const QUESTION_TYPE = {
-  MULTIPLE_CHOICE: "multiple_choice",
+  MULTIPLE_CHOICE: "multiple",
   TEXT_BOX: "text_box",
   ATTACHMENT: "attachment",
   PARAGRAPH: "paragraph",

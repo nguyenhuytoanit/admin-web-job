@@ -32,6 +32,7 @@ function ModalAddNewTemplate({ show, onHide, onSaveSuccess }) {
   const [avatar, setAvatar] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [groups, setGroups] = useState([]);
+  const [showUpImage, setShowUpImage] = useState(false);
 
   const onUploadFile = (file) => {
     if (!file) return;
@@ -66,6 +67,7 @@ function ModalAddNewTemplate({ show, onHide, onSaveSuccess }) {
             name: values.name.trim(),
             code: values.code.trim(),
             group_id: values.construction || "",
+            filedata: avatar,
             image: "image",
           };
           dispatch(createTemplate(params))
@@ -140,7 +142,12 @@ function ModalAddNewTemplate({ show, onHide, onSaveSuccess }) {
                   )}
                 </div>
                 <div className="col-lg-12 mt-2">
-                  <Dropdown drop="up" id="dropdown-button-drop-up">
+                  <Dropdown
+                    drop="up"
+                    id="dropdown-button-drop-up"
+                    onToggle={() => setShowUpImage(!showUpImage)}
+                    show={showUpImage}
+                  >
                     <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
                       Chọn ảnh từ thư viện
                     </Dropdown.Toggle>
@@ -182,7 +189,12 @@ function ModalAddNewTemplate({ show, onHide, onSaveSuccess }) {
                       </div>
                       <div className="d-flex justify-content-between mt-3">
                         <div className="btn btn-primary w-80px">OK</div>
-                        <div className="btn btn-outline-primary w-80px">HỦY</div>
+                        <div
+                          className="btn btn-outline-primary w-80px"
+                          onClick={() => setShowUpImage(false)}
+                        >
+                          HỦY
+                        </div>
                       </div>
                     </Dropdown.Menu>
                   </Dropdown>

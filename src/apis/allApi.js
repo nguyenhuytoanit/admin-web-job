@@ -9,6 +9,8 @@ export const apisTemplate = {
   apiCreateTemplate: "/api/template/create",
   apiUpdateTemplate: (templateId) => `/api/template/update?id=${templateId}`,
   apiDeleteTemplate: (templateId) => `/api/template/delete?id=${templateId}`,
+  apiUpdateBlock: (templateId) => `/api/template/blocks/update?id=${templateId}`,
+  apiCreateBlock: "/api/template/blocks/create",
 };
 
 export const apisGroup = {

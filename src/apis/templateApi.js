@@ -11,8 +11,17 @@ export const TemplateApi = {
     return axiosClient.get(url, { params: { id: templateId } });
   },
   createTemplate: (params) => {
+    var bodyFormData = new FormData();
+    Object.keys(params).forEach((key) => {
+      bodyFormData.append(key, params[key]);
+    });
     const url = apis.apisTemplate.apiCreateTemplate;
-    return axiosClient.post(url, params);
+    return axiosClient({
+      method: "post",
+      url: url,
+      data: bodyFormData,
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    });
   },
   updateTemplate: (params) => {
     const url = apis.apisTemplate.apiUpdateTemplate(params.templateId);
@@ -24,5 +33,13 @@ export const TemplateApi = {
   deleteTemplate: (params) => {
     const url = apis.apisTemplate.apiDeleteTemplate(params.templateId);
     return axiosClient.post(url);
+  },
+  updateBlockTemplate: (params) => {
+    const url = apis.apisTemplate.apiUpdateBlock(params.id);
+    return axiosClient.post(url, params);
+  },
+  createBlockTemplate: (params) => {
+    const url = apis.apisTemplate.apiCreateBlock;
+    return axiosClient.post(url, params);
   },
 };

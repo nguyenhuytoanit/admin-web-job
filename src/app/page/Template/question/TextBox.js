@@ -3,14 +3,14 @@ import { Input } from "app/common/forms/Input";
 import { Field } from "formik";
 import SelectQuestion from "./components/SelectQuestion";
 
-function TextBox({ field, idxContent, remove, content }) {
+function TextBox({ field, idxQuestion, remove, question }) {
   return (
     <div>
       <div className="card mb-3 col-lg-11">
         <div className="row m-2 align-items-center">
           <div className="col-lg-8">
             <Field
-              name={`${field}.question`}
+              name={`${field}.label`}
               component={Input}
               placeholder={"Nhập nội dung đoạn văn"}
               customFeedbackLabel
@@ -23,7 +23,7 @@ function TextBox({ field, idxContent, remove, content }) {
           <div className="col-lg-1">
             <i
               className="fa-solid fa-trash p-3 cursor-pointer text-danger"
-              onClick={() => remove(idxContent)}
+              onClick={() => remove(idxQuestion)}
             ></i>
           </div>
         </div>
@@ -32,7 +32,7 @@ function TextBox({ field, idxContent, remove, content }) {
           <div className="d-flex mt-3">
             <div className="w-200px">
               <Field
-                name={`${field}.showAnswer`}
+                name={`${field}.note`}
                 component={Checkbox}
                 label={"Điền sẵn đáp án"}
                 customFeedbackLabel
@@ -40,10 +40,10 @@ function TextBox({ field, idxContent, remove, content }) {
                 className="w-20px h-20px mb-0"
               />
             </div>
-            {content.showAnswer && (
+            {question.note && (
               <div className="w-100">
                 <Field
-                  name={`${field}.contentAnswerTextBox`}
+                  name={`${field}.answerTextBox`}
                   component={Input}
                   placeholder={"Nhập nội dung đáp án"}
                   customFeedbackLabel
